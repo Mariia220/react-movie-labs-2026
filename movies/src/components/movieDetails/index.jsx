@@ -36,6 +36,10 @@ const [drawerOpen, setDrawerOpen] = useState(false);
         {movie.overview}
       </Typography>
 
+      <Typography variant="h6" component="p">
+        Production Countries
+      </Typography>
+
       <Paper 
         component="ul" 
         sx={{...root}}
@@ -60,6 +64,19 @@ const [drawerOpen, setDrawerOpen] = useState(false);
           label={`${movie.vote_average} (${movie.vote_count})`}
         />
         <Chip label={`Released: ${movie.release_date}`} />
+      </Paper>
+      <Paper 
+        component="ul" 
+        sx={{...root}}
+      >
+        <li>
+          <Chip label="Production Countries" sx={{...chip}} color="primary" />
+        </li>
+        {movie.production_countries.map((c) => (
+          <li key={c.name}>
+            <Chip label={c.name} sx={{...chip}} />
+          </li>
+        ))}
       </Paper>
             <Fab
         color="secondary"
