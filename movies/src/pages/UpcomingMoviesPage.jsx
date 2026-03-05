@@ -3,9 +3,10 @@ import PageTemplate from '../components/templateMovieListPage';
 import { useQuery } from '@tanstack/react-query';
 import Spinner from '../components/spinner';
 import { getUpcomingMovies } from "../api/tmdb-api";
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 const UpcomingMoviesPage = (props) => {
-  // 1. Fetch data using the API function
+  
   const { data, error, isLoading, isError } = useQuery({
   queryKey: ['upcoming'],
   queryFn: getUpcomingMovies,
@@ -19,7 +20,7 @@ const UpcomingMoviesPage = (props) => {
     return <h1>{error.message}</h1>;
   }
 
-  // 2. Extract the movies from the "results" array in your JSON
+  
   const movies = data.results; 
 
   return (
@@ -27,10 +28,9 @@ const UpcomingMoviesPage = (props) => {
       title='Upcoming Movies'
       movies={movies}
       action={(movie) => {
-        // You can leave this empty or add a "Watchlist" button later
-        return null; 
-      }}
-    />
+        return <PlaylistAddIcon movie={movie} />
+        }}
+      />
   );
 };
 
