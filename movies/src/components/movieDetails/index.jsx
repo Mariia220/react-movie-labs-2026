@@ -8,7 +8,8 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 import Fab from "@mui/material/Fab";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
-import MovieReviews from "../movieReviews"
+import MovieReviews from "../movieReviews";
+import { Link } from "react-router";
 
 
 
@@ -22,7 +23,7 @@ const root = {
 };
 const chip = { margin: 0.5 };
 
-const MovieDetails = ({ movie }) => {  // Don't miss this!
+const MovieDetails = ({ movie, credits }) => {  // Don't miss this!
 const [drawerOpen, setDrawerOpen] = useState(false);
 
 
@@ -40,8 +41,7 @@ const [drawerOpen, setDrawerOpen] = useState(false);
         Production Countries
       </Typography>
 
-      <Paper 
-        component="ul" 
+      <Paper component="ul" 
         sx={{...root}}
       >
         <li>
@@ -49,10 +49,13 @@ const [drawerOpen, setDrawerOpen] = useState(false);
         </li>
         {movie.genres.map((g) => (
           <li key={g.name}>
-            <Chip label={g.name} sx={{...chip}} />
+            <Link to={`/genres/${g.id}`} style={{ textDecoration: 'none' }}>
+              <Chip label={g.name} sx={{...chip}} clickable />
+            </Link>
           </li>
         ))}
       </Paper>
+
       <Paper component="ul" sx={{...root}}>
         <Chip icon={<AccessTimeIcon />} label={`${movie.runtime} min.`} />
         <Chip
@@ -65,10 +68,21 @@ const [drawerOpen, setDrawerOpen] = useState(false);
         />
         <Chip label={`Released: ${movie.release_date}`} />
       </Paper>
+      
       <Paper 
         component="ul" 
         sx={{...root}}
       >
+          <li>
+            <Link to={`/movies/${movie.id}/recommendations`} style={{ textDecoration: 'none' }}>
+              <Chip label="Recommended Movies" sx={{...chip}} color="warning" clickable/>
+            </Link>
+          </li>
+        </Paper>
+
+
+
+      <Paper component="ul" sx={{...root}}>
         <li>
           <Chip label="Production Countries" sx={{...chip}} color="primary" />
         </li>
@@ -78,6 +92,30 @@ const [drawerOpen, setDrawerOpen] = useState(false);
           </li>
         ))}
       </Paper>
+
+      <Typography variant="h5" component="h3" sx={{ mt: 2 }}>
+        Main Cast
+      </Typography>
+
+      <Paper component="ul" sx={{...root}}>
+  {credits && credits.cast ? (
+    credits.cast.slice(0, 6).map((actor) => (
+      <li key={actor.name}>
+        <Link to={`/actors/${actor.id}`} style={{ textDecoration: 'none' }}>
+          <Chip 
+            label={actor.name} 
+            sx={{...chip}} 
+            clickable 
+            color="info"
+            variant="outlined" 
+          />
+        </Link>
+      </li>
+    ))
+  ) : (
+    <Typography>Loading cast...</Typography>
+  )}
+</Paper>
             <Fab
         color="secondary"
         variant="extended"

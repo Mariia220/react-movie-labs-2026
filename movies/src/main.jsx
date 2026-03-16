@@ -10,8 +10,9 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import MoviesContextProvider from "./contexts/moviesContext";
 import AddMovieReviewPage from './pages/addMovieReviewPage';
-import UpcomingMoviesPage from "./pages/UpcomingMoviesPage"
-
+import UpcomingMoviesPage from "./pages/UpcomingMoviesPage";
+import WatchLaterPage from "./pages/WatchLaterPage";
+import ActorDetailsPage from "./pages/actorDetailsPage";
 
 
 
@@ -40,6 +41,7 @@ const App = () => {
             <Route path="*" element={ <Navigate to="/" /> } />
             <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
             <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+            <Route path="/actors/:id" element={<ActorDetailsPage />} />
           </Routes>
         </MoviesContextProvider>
       </BrowserRouter>

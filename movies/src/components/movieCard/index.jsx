@@ -33,6 +33,10 @@ export default function MovieCard({movie, action}) {
     addToFavorites(movie);
   };
 
+  const handleAddToWatchLater = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <Card>
            <CardHeader
@@ -82,7 +86,7 @@ export default function MovieCard({movie, action}) {
             More Info ...
           </Button>
         </Link>
-        
+
       </CardActions>
 
     </Card>
