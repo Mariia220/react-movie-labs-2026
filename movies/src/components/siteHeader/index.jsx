@@ -41,12 +41,16 @@ const SiteHeader = () => {
 
   return (
     <>
-      <AppBar position="fixed" color="secondary">
+      <AppBar position="fixed" sx={{ 
+          backgroundColor: "rgba(18, 18, 18, 0.95)", 
+          backdropFilter: "blur(8px)", 
+          borderBottom: "1px solid rgba(255, 255, 255, 0.12)" 
+        }}>
         <Toolbar>
-          <Typography variant="h4" sx={{ flexGrow: 1 }}>
+          <Typography variant="h4" sx={{ flexGrow: 1, fontWeight: 'bold', letterSpacing: '1px' }}>
             TMDB Client
           </Typography>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" sx={{ flexGrow: 1, fontStyle: 'italic', opacity: 0.7 }}>
             All you ever wanted to know about Movies!
           </Typography>
             {isMobile ? (
