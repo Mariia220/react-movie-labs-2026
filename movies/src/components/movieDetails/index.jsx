@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -24,6 +25,8 @@ const root = {
 const chip = { margin: 0.5 };
 
 const MovieDetails = ({ movie, credits }) => {  // Don't miss this!
+  console.log("Movie data:", movie);
+  console.log("Credits data:", credits);
 const [drawerOpen, setDrawerOpen] = useState(false);
 
 
@@ -46,12 +49,12 @@ const [drawerOpen, setDrawerOpen] = useState(false);
       >
         <li>
           <Chip label="Genres" sx={{...chip}} color="primary" />
-        </li>
-        {movie.genres.map((g) => (
-          <li key={g.name}>
-            <Link to={`/genres/${g.id}`} style={{ textDecoration: 'none' }}>
-              <Chip label={g.name} sx={{...chip}} clickable />
-            </Link>
+         </li>
+             {movie.genres.map((g) => (
+             <li key={g.name}>
+             <Link to={`/genres/${g.id}`} style={{ textDecoration: 'none' }}>
+             <Chip label={g.name} sx={{...chip}} clickable />
+             </Link>
           </li>
         ))}
       </Paper>
@@ -97,18 +100,24 @@ const [drawerOpen, setDrawerOpen] = useState(false);
         Main Cast
       </Typography>
 
-      <Paper component="ul" sx={{...root}}>
+      <Paper component="ul" sx={{...root, gap: 2}}>
   {credits && credits.cast ? (
     credits.cast.slice(0, 6).map((actor) => (
-      <li key={actor.name}>
-        <Link to={`/actors/${actor.id}`} style={{ textDecoration: 'none' }}>
-          <Chip 
-            label={actor.name} 
-            sx={{...chip}} 
-            clickable 
-            color="info"
-            variant="outlined" 
+      <li key={actor.id} style={{ textAlign: 'center', listStyle: 'none' }}>
+        <Link to={`/actors/${actor.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <img 
+            src={actor.profile_path 
+              ? `https://image.tmdb.org/t/p/w200${actor.profile_path}` 
+              : "https://via.placeholder.com/100x150?text=No+Photo"} 
+            alt={actor.name}
+            style={{ width: '80px', height: '120px', borderRadius: '8px', objectFit: 'cover' }}
           />
+          <Typography variant="body2" sx={{ fontWeight: 'bold', mt: 1 }}>
+            {actor.name}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {actor.character}
+          </Typography>
         </Link>
       </li>
     ))
