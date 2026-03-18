@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import { getActor } from "../api/tmdb-api"; 
+import { getActor, getActorMovieCredits } from "../api/tmdb-api"; 
 import Spinner from '../components/spinner';
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
