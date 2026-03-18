@@ -1,16 +1,27 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
+import RemoveFromMustWatch from "../components/cardIcons/remoteFromMustWatch";
+import WriteReview from "../components/cardIcons/writeReview";
 
 const WatchLaterPage = () => {
-    const { watchLater } = useContext(MoviesContext);
+  
+  const { mustWatch: movies } = useContext(MoviesContext);
 
-    return (
-        <PageTemplate
-            title="Watch Later"
-            movies={watchLater}
-        />
-    );
+
+return (
+    <PageTemplate
+      title="Watch Later Movies"
+      movies={movies}
+      action={(movie) => {
+        return (
+          <>
+            <RemoveFromMustWatch movie={movie} />
+            <WriteReview movie={movie} />
+          </>
+        );
+      }}
+    />
+  );
 };
-
 export default WatchLaterPage;

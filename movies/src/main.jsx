@@ -35,13 +35,15 @@ const App = () => {
         <MoviesContextProvider>
           <Routes>
             <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+            <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
+            <Route path="/movies/watchlater" element={<WatchLaterPage />} />
             <Route path="/reviews/:id" element={ <MovieReviewPage /> } />
             <Route path="/movies/:id" element={<MoviePage />} />
             <Route path="/" element={<HomePage />} />
             <Route path="*" element={ <Navigate to="/" /> } />
             <Route path="/reviews/form" element={ <AddMovieReviewPage /> } />
-            <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
             <Route path="/actors/:id" element={<ActorDetailsPage />} />
+            
           </Routes>
         </MoviesContextProvider>
       </BrowserRouter>

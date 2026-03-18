@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import RemoveFromMustWatchIcon from "../components/cardIcons/remoteFromMustWatch";
 
 export const MoviesContext = React.createContext(null);
 
@@ -6,6 +7,7 @@ const MoviesContextProvider = (props) => {
   const [favorites, setFavorites] = useState( [] )
   const [mustWatch, setMustWatch] = useState( [] )
   const [myReviews, setMyReviews] = useState( {} ) 
+  const [watchLater, setWatchLater] = useState([])
   
 
 
@@ -21,15 +23,10 @@ const MoviesContextProvider = (props) => {
   };
 
   const addToMustWatch = (movie) => {
-    let newMustWatch = [];
-    if (!mustWatch.includes(movie.id)) {
-      newMustWatch = [...mustWatch, movie.id];
+    if (!mustWatch.find((m) => m.id === movie.id)) {
+      setMustWatch([...mustWatch, movie]);
+      console.log("Added to Must Watch:", movie.title);
     }
-    else{
-      newMustWatch = [...mustWatch];
-    }
-    setMustWatch(newMustWatch)
-    console.log("Must Watch List:", newMustWatch);
   };
   
   // We will use this function in the next step
@@ -39,26 +36,32 @@ const MoviesContextProvider = (props) => {
     ) )
   };
 
+  const removeFromMustWatch = (movie) => {
+    setMustWatch(mustWatch.filter((m) => m.id !== movie.id));
+  };
+
     const addReview = (movie, review) => {
     setMyReviews( {...myReviews, [movie.id]: review } )
   };
     console.log(myReviews);
 
-   return (
+  
+
+  return (
     <MoviesContext.Provider
       value={{
+        watchLater,
+        mustWatch,
+        addToMustWatch,
+        removeFromMustWatch,
         favorites,
         addToFavorites,
         removeFromFavorites,
         addReview,
-        mustWatch,
-        addToMustWatch,
-      }}
-    >
+      }}>
       {props.children}
     </MoviesContext.Provider>
   );
-
 };
 
 export default MoviesContextProvider;
