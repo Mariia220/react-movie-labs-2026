@@ -166,3 +166,17 @@ export const getActorMovieCredits = ({ queryKey }) => {
     return response.json();
   });
 };
+
+
+export const getMoviesByGenre = ({ queryKey }) => {
+  const [, idPart] = queryKey;
+  const { id } = idPart;
+  return fetch(
+    `https://api.themoviedb.org/3/genre/${id}/movies?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to fetch movies by genre");
+    }
+    return response.json();
+  });
+};
