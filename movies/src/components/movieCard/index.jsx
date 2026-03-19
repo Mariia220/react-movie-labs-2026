@@ -70,13 +70,13 @@ export default function MovieCard({movie, action}) {
       />
       <CardContent>
        <Grid container spacing={1} sx={{ opacity: 0.8 }}>
-          <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Grid size={{ xs: 6 }} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <Typography variant="body2">
               <CalendarIcon fontSize="small" />
               {movie.release_date}
             </Typography>
           </Grid>
-          <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Grid size={{ xs: 6 }} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <Typography variant="body2">
               <StarRateIcon fontSize="small" sx={{ color: '#ffc107' }} />
               {"  "} {movie.vote_average}{" "}
