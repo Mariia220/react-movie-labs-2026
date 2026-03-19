@@ -1,19 +1,18 @@
 import React from "react";
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import { getMoviesByGenre } from "../api/tmdb-api";
+import { getSearchMovies } from "../api/tmdb-api";
 import PageTemplate from '../components/templateMovieListPage';
 import Spinner from '../components/spinner';
-import AddToMustWatchIcon from '../components/cardIcons/addToMustWatch';
+import AddToFavoritesIcon from '../components/cardIcons/addToFavorites';
 
-
-
-const GenrePage = () => {
-  const { id } = useParams(); 
+const SearchPage = () => {
+  const { query } = useParams(); 
 
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ["genre", { id: id }],
-    queryFn: getMoviesByGenre,
+    queryKey: ["search", { query: query }],
+    queryFn: getSearchMovies,
+    enabled: !!query, 
   });
 
   if (isPending) return <Spinner />;
@@ -23,13 +22,13 @@ const GenrePage = () => {
 
   return (
     <PageTemplate
-      title={`Genre Movies`}
+      title={`Results for: ${query}`}
       movies={movies}
       action={(movie) => {
-       return <AddToMustWatchIcon movie={movie} />
+        return <AddToFavoritesIcon movie={movie} />;
       }}
     />
   );
 };
 
-export default GenrePage;
+export default SearchPage;

@@ -11,6 +11,10 @@ import { useNavigate } from "react-router";
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
+import Stack from "@mui/material/Stack";
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
@@ -20,8 +24,9 @@ const SiteHeader = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -39,6 +44,13 @@ const SiteHeader = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && searchTerm.trim()) {
+      navigate(`/search/${searchTerm}`); 
+      setSearchTerm("");
+    }
+  };
+
   return (
     <>
       <AppBar position="fixed" sx={{ 
@@ -53,55 +65,59 @@ const SiteHeader = () => {
           <Typography variant="h6" sx={{ flexGrow: 1, fontStyle: 'italic', opacity: 0.7 }}>
             All you ever wanted to know about Movies!
           </Typography>
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="Search movies..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleSearch}
+            sx={{
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              borderRadius: "20px",
+              width: isMobile ? "120px" : "250px",
+              mr: 2,
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "20px",
+                color: "white",
+                "& fieldset": { border: "none" },
+              },
+              "& .MuiInputBase-input::placeholder": { color: "rgba(255,255,255,0.5)" }
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: "rgba(255,255,255,0.5)" }} />
+                </InputAdornment>
+),
+            }}
+          />
             {isMobile ? (
               <>
-                <IconButton
-                  aria-label="menu"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {menuOptions.map((opt) => (
-                    <MenuItem
-                      key={opt.label}
-                      onClick={() => handleMenuSelect(opt.path)}
-                    >
-                      {opt.label}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </>
-            ) : (
-              <>
+                <IconButton onClick={handleMenu} color="inherit">
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
                 {menuOptions.map((opt) => (
-                  <Button
-                    key={opt.label}
-                    color="inherit"
-                    onClick={() => handleMenuSelect(opt.path)}
-                  >
+                  <MenuItem key={opt.label} onClick={() => handleMenuSelect(opt.path)}>
                     {opt.label}
-                  </Button>
+                  </MenuItem>
                 ))}
-              </>
-            )}
+              </Menu>
+            </>
+          ) : (
+            <Stack direction="row" spacing={1}>
+              {menuOptions.map((opt) => (
+                <Button key={opt.label} color="inherit" onClick={() => handleMenuSelect(opt.path)}>
+                  {opt.label}
+                </Button>
+              ))}
+            </Stack>
+          )}
         </Toolbar>
       </AppBar>
       <Offset />

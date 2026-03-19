@@ -9,7 +9,8 @@ import { MoviesContext } from "../../contexts/moviesContext";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useNavigate } from "react-router";
-
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 
 
 const ratings = [
@@ -104,96 +105,69 @@ const ReviewForm = ({ movie }) => {
 
 
   return (
-    <Box component="div" sx={styles.root}>
-      <Typography component="h2" variant="h3">
-        Write a review
-      </Typography>
-      
-      <Snackbar
-        sx={styles.snack}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
-        onClose={handleSnackClose}
+    <Box sx={{ py: 4, px: 2, display: "flex", justifyContent: "center" }}>
+      <Paper 
+        elevation={4} 
+        sx={{ 
+          p: { xs: 3, md: 5 }, 
+          width: "100%", 
+          maxWidth: "800px", 
+          borderRadius: "16px",
+          backgroundColor: "#ffffff" 
+        }}
       >
-        <MuiAlert
-          severity="success"
-          variant="filled"
-          onClose={handleSnackClose}
-        >
-          <Typography variant="h4">
-            Thank you for submitting a review
-          </Typography>
-        </MuiAlert>
-      </Snackbar>
+        <Typography variant="h4" component="h2" sx={{ mb: 4, fontWeight: "bold", color: "#1a1a1a" }}>
+          Write a review
+        </Typography>
 
-      <form sx={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Controller
-          name="author"
-          control={control}
-          rules={{ required: "Name is required" }}
-          defaultValue=""
-          render={({ field: { onChange, value } }) => (
-            <TextField
-              sx={{ width: "40ch" }}
-              variant="outlined"
-              margin="normal"
-              required
-              onChange={onChange}
-              value={value}
-              id="author"
-              label="Author's name"
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <Stack spacing={3}> 
+            
+            <Controller
               name="author"
-              autoFocus
+              control={control}
+              rules={{ required: "Name is required" }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth 
+                  label="Author's name"
+                  variant="outlined"
+                  error={!!errors.author}
+                  helperText={errors.author?.message}
+                />
+              )}
             />
-          )}
-        />
-        {errors.author && (
-          <Typography variant="h6" component="p">
-            {errors.author.message}
-          </Typography>
-        )}
-        <Controller
-          name="review"
-          control={control}
-          rules={{
-            required: "Review cannot be empty.",
-            minLength: { value: 10, message: "Review is too short" },
-          }}
-          defaultValue=""
-          render={({ field: { onChange, value } }) => (
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="review"
-              value={value}
-              onChange={onChange}
-              label="Review text"
-              id="review"
-              multiline
-              minRows={10}
-            />
-          )}
-        />
-        {errors.review && (
-          <Typography variant="h6" component="p">
-            {errors.review.message}
-          </Typography>
-        )}
 
-        <Controller
-          control={control}
-          name="rating"
-          render={({ field: { onChange, value } }) => (
+            <Controller
+              name="review"
+              control={control}
+              rules={{
+                required: "Review cannot be empty.",
+                minLength: { value: 10, message: "Review is too short" },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  label="Review text"
+                  multiline
+                  minRows={8}
+                  variant="outlined"
+                  error={!!errors.review}
+                  helperText={errors.review?.message}
+                />
+              )}
+            />
+
             <TextField
               id="select-rating"
               select
-              variant="outlined"
-              label="Rating Select"
+              label="Rating"
               value={rating}
               onChange={handleRatingChange}
-              helperText="Don't forget your rating"
+              helperText="How much did you like the movie?"
+              sx={{ width: { xs: "100%", sm: "200px" } }} 
             >
               {ratings.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
@@ -201,34 +175,49 @@ const ReviewForm = ({ movie }) => {
                 </MenuItem>
               ))}
             </TextField>
-          )}
-        />
 
-        <Box sx={styles.buttons}>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={styles.submit}
-          >
-            Submit
-          </Button>
-          <Button
-            type="reset"
-            variant="contained"
-            color="secondary"
-            sx={styles.submit}
-            onClick={() => {
-              reset({
-                author: "",
-                content: "",
-              });
-            }}
-          >
-            Reset
-          </Button>
-        </Box>
-      </form>
+            <Box sx={{ display: "flex", gap: 2, pt: 2, justifyContent: "flex-end" }}>
+              <Button
+                type="reset"
+                variant="outlined"
+                color="secondary"
+                size="large"
+                onClick={() => {
+                  reset();
+                  setRating(3);
+                }}
+                sx={{ borderRadius: "8px", px: 4 }}
+              >
+                Reset
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+                sx={{ 
+                  borderRadius: "8px", 
+                  px: 4,
+                  boxShadow: "0 4px 12px rgba(25, 118, 210, 0.3)" 
+                }}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Stack>
+        </form>
+
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={open}
+          autoHideDuration={3000}
+          onClose={handleSnackClose}
+        >
+          <MuiAlert severity="success" variant="filled" elevation={6}>
+            Thank you! Your review has been submitted.
+          </MuiAlert>
+        </Snackbar>
+      </Paper>
     </Box>
   );
 };
